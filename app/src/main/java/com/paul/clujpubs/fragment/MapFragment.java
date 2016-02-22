@@ -8,6 +8,7 @@ package com.paul.clujpubs.fragment;
         import android.hardware.SensorEvent;
         import android.hardware.SensorEventListener;
         import android.hardware.SensorManager;
+        import android.location.Location;
         import android.os.Bundle;
         import android.support.annotation.Nullable;
         import android.support.v4.app.ActionBarDrawerToggle;
@@ -153,6 +154,8 @@ public class MapFragment extends Fragment implements SKMapSurfaceListener, SKRou
 
     private View view;
 
+    private SKCoordinate mLastLocation = new SKCoordinate(0,0);
+
     public enum TestingOption {
         TESTING_OPTION, ANNOTATION_OPTION, MAP_VIEW_SETTINGS_OPTION, MAP_CACHE_OPTION, LAST_RENDERED_FRAME_OPTION, ANIMATION_CUSTOM_VIEW_OPTION, BOUNDING_BOX_OPTION, INTERNALIZATION_OPTION, ANIMATE_OPTION, MAP_STYLE_OPTION, SCALE_VIEW_OPTION, CALLOUT_VIEW_OPTION,
         ROUTING_OPTION, MAP_VERSION_OPTION, OVERLAYS_OPTION, POSITION_LOGGING_OPTION, POI_TRACKER
@@ -291,6 +294,7 @@ public class MapFragment extends Fragment implements SKMapSurfaceListener, SKRou
 
     @Override
     public void onLongPress(SKScreenPoint skScreenPoint) {
+        mapView.pointToCoordinate(skScreenPoint);
     }
 
 
@@ -650,6 +654,12 @@ public class MapFragment extends Fragment implements SKMapSurfaceListener, SKRou
 //                }
 //                break;
 //        }
+    }
+
+
+    public void onLocationChanged(SKCoordinate location) {
+        mLastLocation = location;
+        mapView.setPositionAsCurrent(location,17f,true);
     }
 
     @Override
